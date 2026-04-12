@@ -26,7 +26,7 @@ parser.add_argument('--batchsize', type=int, default=12, help='batch size')
 parser.add_argument("--epochs", type=int, default=200, help="number of epochs")
 parser.add_argument("--lr", type=float, default=1e-4, help="initial learning rate")  # default=1e-4
 parser.add_argument('--pretrained_model_path',  type=str, default=None)
-parser.add_argument('--dataroot', type=str, default='/home/zcl/Dataset/semantic_seg_dataset/Chikusei.mat',
+parser.add_argument('--dataroot', type=str, default='../Data/Chikusei/Chikusei.mat',
                     help='path to HSI dir')
 
 parser.add_argument("--step", type=int, default=10,
