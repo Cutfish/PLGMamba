@@ -29,7 +29,16 @@ class TrainHSRDataset(Dataset):
         self.upscale = upscale
         self.arg = arg
         with h5py.File(dataroot, 'r') as file:
-            data = file['data'][:].transpose(2, 1, 0).astype(np.float32)
+            # 支持两种数据格式：mat文件(chikusei键) 或 h5文件(data/GT键)
+            if 'chikusei' in file.keys():
+                data = file['chikusei'][:].transpose(2, 1, 0).astype(np.float32)
+            elif 'data' in file.keys():
+                data = file['data'][:].astype(np.float32).transpose(2, 1, 0)
+            elif 'GT' in file.keys():
+                # 预切好的数据对格式，直接使用GT作为HR数据
+                data = file['GT'][:].astype(np.float32).transpose(0, 2, 3, 1).reshape(-1, *file['GT'].shape[2:])
+            else:
+                raise KeyError(f"Unknown data keys in {dataroot}: {list(file.keys())}")
         if testarea[-1] == 'row':
             self.trdata = np.delete(data, np.arange(testarea[0], testarea[1]), axis=0)
         else:
@@ -92,7 +101,14 @@ class TestHSRDataset(Dataset):
         self.upscale = upscale
         self.arg = arg
         with h5py.File(dataroot, 'r') as file:
-            data = file['data'][:].transpose(2, 1, 0).astype(np.float32)  # HSI
+            if 'chikusei' in file.keys():
+                data = file['chikusei'][:].transpose(2, 1, 0).astype(np.float32)
+            elif 'data' in file.keys():
+                data = file['data'][:].astype(np.float32).transpose(2, 1, 0)
+            elif 'GT' in file.keys():
+                data = file['GT'][:].astype(np.float32).transpose(0, 2, 3, 1).reshape(-1, *file['GT'].shape[2:])
+            else:
+                raise KeyError(f"Unknown data keys in {dataroot}: {list(file.keys())}")   # HSI
         if testarea[-1] == 'row':
             self.tedata = data[testarea[0]:testarea[1], :, :]
         else:
