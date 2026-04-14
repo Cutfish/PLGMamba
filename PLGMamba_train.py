@@ -22,7 +22,7 @@ parser.add_argument('--scale', type=int, default=4, help='SSR scale, i.e., x2, x
 parser.add_argument('--cropsize', type=int, default=256, help='crop size of subimage, i.e., 256 or 128')
 parser.add_argument('--overlapixel', type=int, default=128, help='overlapping pixels among subimages')
 parser.add_argument('--sel_num', type=int, default=1024, help='randomly select quantity')
-parser.add_argument('--batchsize', type=int, default=12, help='batch size')
+parser.add_argument('--batchsize', type=int, default=6, help='batch size')
 parser.add_argument("--epochs", type=int, default=200, help="number of epochs")
 parser.add_argument("--lr", type=float, default=1e-4, help="initial learning rate")  # default=1e-4
 parser.add_argument('--pretrained_model_path',  type=str, default=None)
